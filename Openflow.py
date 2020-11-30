@@ -20,16 +20,16 @@ class LinuxRouter( Node ):
 class NetworkTopo( Topo ):
 
     def build( self, **_opts ):
-        r1 = self.addNode( 'r1', cls=LinuxRouter, ip='5.5.5.5/24' )
+        r1 = self.addNode( 'r1', cls=LinuxRouter, ip='10.1.1.1/24' )
         s1, s2, s3 = [ self.addSwitch( s ) for s in ( 's1', 's2', 's3') ]
 
-        self.addLink( s1, r1, intfName2='r1-eth1', params2={ 'ip' : '10.1.1.0/24' } )
-        self.addLink( s2, r1, intfName2='r1-eth2', params2={ 'ip' : '192.168.1.0/24' } )
-        self.addLink( s3, r1, intfName2='r1-eth3', params2={ 'ip' : '172.16.0.0/24' } )
+        self.addLink( s1, r1, intfName2='r1-eth1', params2={ 'ip' : '10.1.1.1/24' } )
+        self.addLink( s2, r1, intfName2='r1-eth2', params2={ 'ip' : '192.168.1.1/24' } )
+        self.addLink( s3, r1, intfName2='r1-eth3', params2={ 'ip' : '172.16.0.1/24' } )
 
         msp_a = self.addHost( 'msp_a', ip='10.1.1.2/24', defaultRoute='via 10.1.1.1' )
         msp_b = self.addHost( 'msp_b', ip='10.1.1.3/24', defaultRoute='via 10.1.1.1' )
-        klanta_a = self.addHost( 'klanta_a', ip='192.168.1.2/248', defaultRoute='via 192.168.1.1' )
+        klanta_a = self.addHost( 'klanta_a', ip='192.168.1.2/24', defaultRoute='via 192.168.1.1' )
         klanta_b = self.addHost( 'klanta_b', ip='192.168.1.3/24', defaultRoute='via 192.168.1.1' )
         klantc_a = self.addHost( 'klantc_a', ip='172.16.0.2/24', defaultRoute='via 172.16.0.1' )
         klantc_b = self.addHost( 'klantc_b', ip='172.16.0.3/24', defaultRoute='via 172.16.0.1' )
