@@ -20,21 +20,20 @@ class LinuxRouter( Node ):
 class NetworkTopo( Topo ):
 
     def build( self, **_opts ):
-        r1 = self.addNode( 'r1', cls=LinuxRouter, ip='192.168.1.1/24' )
-        s1, s2, s3, s4= [ self.addSwitch( s ) for s in ( 's1', 's2', 's3','s4') ]
+        r1 = self.addNode( 'r1', cls=LinuxRouter, ip='5.5.5.5/24' )
+        s1, s2, s3 = [ self.addSwitch( s ) for s in ( 's1', 's2', 's3') ]
 
-        self.addLink( s1, r1, intfName2='r1-eth1', params2={ 'ip' : '192.168.1.1/24' } )
-        self.addLink( s2, r1, intfName2='r1-eth2', params2={ 'ip' : '172.16.0.1/12' } )
-        self.addLink( s3, r1, intfName2='r1-eth3', params2={ 'ip' : '10.0.0.1/8' } )
-        self.addLink( s4, r1, intfName2='r1-eth4', params2={ 'ip' : '5.5.5.1/16' } )
+        self.addLink( s1, r1, intfName2='r1-eth1', params2={ 'ip' : '10.1.1.0/24' } )
+        self.addLink( s2, r1, intfName2='r1-eth2', params2={ 'ip' : '192.168.1.0/24' } )
+        self.addLink( s3, r1, intfName2='r1-eth3', params2={ 'ip' : '172.16.0.0/24' } )
 
-        h1 = self.addHost( 'h1', ip='192.168.1.100/24', defaultRoute='via 192.168.1.1' )
-        h2 = self.addHost( 'h2', ip='172.16.0.100/12', defaultRoute='via 172.16.0.1' )
-        h3 = self.addHost( 'h3', ip='10.0.0.100/8', defaultRoute='via 10.0.0.1' )
-        r2 = self.addNode( 'r2',cls=LinuxRouter,ip='5.5.5.100/16', defaultRoute='via 5.5.5.1' )
-
-        for h, s in [ (h1, s1), (h2, s2), (h3, s3) ]:
+        msp_a = self.addHost( 'msp_a', ip='10.1.1.2/24', defaultRoute='via 10.1.1.1' )
+        msp_b = self.addHost( 'msp_b', ip='10.1.1.3/24', defaultRoute='via 10.1.1.1' )
+        klanta_a = self.addHost( 'klanta_a', ip='192.168.1.2/248', defaultRoute='via 192.168.1.1' )
+        klanta_b = self.addHost( 'klanta_b', ip='192.168.1.3/24', defaultRoute='via 192.168.1.1' )
+        klantc_a = self.addHost( 'klantc_a', ip='172.16.0.2/24', defaultRoute='via 172.16.0.1' )
+        klantc_b = self.addHost( 'klantc_b', ip='172.16.0.3/24', defaultRoute='via 172.16.0.1' )
+        for h, s in [ (msp_a, s1), (msp_b, s1), (klanta_a, s2), (klanta_b, s2), (klantc_a, s3), (klantc_b, s3) ]:
             self.addLink( h, s)
-        self.addLink(r2,s4)
 
 topos = { 'mytopo': ( lambda: NetworkTopo() ) }
